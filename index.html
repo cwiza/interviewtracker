@@ -13,7 +13,8 @@
 <body>
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script>
+        // Initialize React and ReactDOM
         const { useState, useEffect } = React;
         const { Plus, Brain, TrendingUp, MessageCircle, FileText, Search, Calendar, Building, User, Lightbulb, Target } = lucide;
 
@@ -153,7 +154,7 @@ Focus on UX-specific insights and provide practical, actionable advice for a sen
                         "Prepare questions about the company's design culture and AI adoption"
                     ]
                 };
-                setInsights(mock Insights);
+                setInsights(mockInsights);
                 setAiNotAvailable(false);
             };
 
@@ -585,7 +586,7 @@ Focus on UX-specific insights and provide practical, actionable advice for a sen
             );
         };
 
-        ReactDOM.render(<InterviewInsightsTracker />, document.getElementById('root'));
+        ReactDOM.render(React.createElement(InterviewInsightsTracker), document.getElementById('root'));
     </script>
 </body>
 </html>

@@ -1,10 +1,14 @@
 # AI-Powered Interview Insights Tracker
 
-A web application that helps track and analyze job interview experiences, providing AI-powered insights to help improve future interviews.
+A modern web application to track and analyze job interviews with AI-powered insights.
 
 ## Features
 
-- Track interview details (company, position, date, etc.)
+- Track job interviews with detailed information
+- View statistics and metrics
+- Generate AI-powered insights and recommendations
+- Modern, responsive UI
+- Local storage persistence
 - Record interview questions, feedback, and reflections
 - AI-powered insights and recommendations
 - Visual dashboard with interview statistics

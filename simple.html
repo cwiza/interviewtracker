@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Insights Tracker</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        // Create React elements
+        const InterviewInsightsTracker = () => {
+            const [interviews, setInterviews] = React.useState([]);
+            const [activeTab, setActiveTab] = React.useState('dashboard');
+
+            const addInterview = () => {
+                const newInterview = {
+                    company: 'Test Company',
+                    position: 'Test Position',
+                    id: Date.now(),
+                    createdAt: new Date().toISOString()
+                };
+                setInterviews([...interviews, newInterview]);
+            };
+
+            const renderDashboard = () => {
+                return React.createElement('div', { className: 'space-y-6' },
+                    React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-4 gap-4' },
+                        React.createElement('div', { className: 'bg-blue-50 p-4 rounded-lg' },
+                            React.createElement('div', { className: 'flex items-center' },
+                                React.createElement('div', { className: 'ml-3' },
+                                    React.createElement('p', { className: 'text-sm font-medium text-blue-600' }, 'Total Interviews'),
+                                    React.createElement('p', { className: 'text-2xl font-bold text-blue-900' }, interviews.length)
+                                )
+                            )
+                        )
+                    ),
+                    React.createElement('div', { className: 'bg-white rounded-lg shadow p-6' },
+                        React.createElement('div', { className: 'flex justify-between items-center mb-4' },
+                            React.createElement('h3', { className: 'text-lg font-medium' }, 'Recent Interviews'),
+                            React.createElement('button', {
+                                onClick: addInterview,
+                                className: 'bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600'
+                            },
+                                'Add Interview'
+                            )
+                        )
+                    )
+                );
+            };
+
+            return React.createElement('div', { className: 'min-h-screen bg-gray-50 p-6' },
+                React.createElement('div', { className: 'max-w-7xl mx-auto' },
+                    React.createElement('div', { className: 'flex justify-between items-center mb-8' },
+                        React.createElement('h1', { className: 'text-2xl font-bold text-gray-900' }, 'Interview Insights Tracker'),
+                        React.createElement('div', { className: 'flex space-x-4' },
+                            React.createElement('button', {
+                                onClick: () => setActiveTab('dashboard'),
+                                className: `px-4 py-2 rounded-lg ${activeTab === 'dashboard' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`
+                            }, 'Dashboard'),
+                            React.createElement('button', {
+                                onClick: () => setActiveTab('interviews'),
+                                className: `px-4 py-2 rounded-lg ${activeTab === 'interviews' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`
+                            }, 'All Interviews'),
+                            React.createElement('button', {
+                                onClick: () => setActiveTab('insights'),
+                                className: `px-4 py-2 rounded-lg ${activeTab === 'insights' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`
+                            }, 'Insights')
+                        )
+                    ),
+                    activeTab === 'dashboard' && renderDashboard()
+                )
+            );
+        };
+
+        ReactDOM.render(React.createElement(InterviewInsightsTracker), document.getElementById('root'));
+    </script>
+</body>
+</html>

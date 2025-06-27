@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Insights Tracker</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .layout {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 120px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+            background: white;
+        }
+
+        .text-primary {
+            color: #3b82f6;
+        }
+
+        .text-secondary {
+            color: #6b7280;
+        }
+
+        .text-success {
+            color: #10b981;
+        }
+
+        .text-warning {
+            color: #f59e0b;
+        }
+
+        .text-error {
+            color: #ef4444;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .status-badge.success {
+            background: #dcfce7;
+            color: #10b981;
+        }
+
+        .status-badge.warning {
+            background: #fef9c3;
+            color: #f59e0b;
+        }
+
+        .status-badge.error {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .stats-number {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        .section-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            flex: 1;
+        }
+
+        .section-header .icon {
+            width: 24px;
+            height: 24px;
+            color: #3b82f6;
+            align-self: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+            width: 100%;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .flex-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 2px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 24px;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            font-weight: 500;
+            color: #6b7280;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            color: #3b82f6;
+        }
+
+        .nav-tab.active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .section-header h3 {
+                flex: none;
+            }
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [interviews, setInterviews] = useState([]);
+            const [showAddForm, setShowAddForm] = useState(false);
+            const [activeTab, setActiveTab] = useState('dashboard');
+            const [insights, setInsights] = useState(null);
+            const [isAnalyzing, setIsAnalyzing] = useState(false);
+            const [aiNotAvailable, setAiNotAvailable] = useState(false);
+            const [newInterview, setNewInterview] = useState({
+                company: '',
+                position: '',
+                interviewType: '',
+                date: '',
+                interviewer: '',
+                questions: '',
+                feedback: '',
+                myReflection: '',
+                outcome: 'pending'
+            });
+
+            // Load data from localStorage
+            useEffect(() => {
+                const savedInterviews = localStorage.getItem('interview-insights-data');
+                if (savedInterviews) {
+                    try {
+                        setInterviews(JSON.parse(savedInterviews));
+                    } catch (error) {
+                        console.error('Error loading saved data:', error);
+                    }
+                }
+            }, []);
+
+            // Save data to localStorage
+            useEffect(() => {
+                if (interviews.length > 0) {
+                    localStorage.setItem('interview-insights-data', JSON.stringify(interviews));
+                }
+            }, [interviews]);
+
+            const handleInputChange = (field, value) => {
+                setNewInterview(prev => ({ ...prev, [field]: value }));
+            };
+
+            const addInterview = () => {
+                if (newInterview.company && newInterview.position) {
+                    const interview = {
+                        ...newInterview,
+                        id: Date.now(),
+                        createdAt: new Date().toISOString()
+                    };
+                    setInterviews([...interviews, interview]);
+                    setNewInterview({
+                        company: '',
+                        position: '',
+                        interviewType: '',
+                        date: '',
+                        interviewer: '',
+                        questions: '',
+                        feedback: '',
+                        myReflection: '',
+                        outcome: 'pending'
+                    });
+                    setShowAddForm(false);
+                }
+            };
+
+            const generateMockInsights = () => {
+                const mockInsights = {
+                    overallTrends: "Based on your interview data, you're showing strong progress in articulating UX processes. Companies are consistently asking about your research methodology and design systems experience.",
+                    strengthsIdentified: [
+                        "Strong user research background and methodology",
+                        "Clear communication of design decisions",
+                        "Experience with cross-functional collaboration"
+                    ],
+                    areasForImprovement: [
+                        "Practice quantifying business impact of design decisions",
+                        "Strengthen portfolio case studies with measurable outcomes",
+                        "Develop more concrete examples of AI/ML integration in UX"
+                    ],
+                    commonQuestions: [
+                        "Walk me through your design process",
+                        "How do you handle stakeholder pushback on design decisions?",
+                        "Describe a time when user research changed your design direction"
+                    ],
+                    interviewerInsights: "Design managers are particularly focused on your ability to mentor junior designers and influence product strategy. Engineering-focused interviewers want to understand how you work with technical constraints.",
+                    actionableRecommendations: [
+                        "Prepare 2-3 stories that demonstrate measurable business impact",
+                        "Practice explaining complex UX concepts to non-design stakeholders",
+                        "Research each company's design culture and AI adoption"
+                    ],
+                    prepSuggestions: [
+                        "Create a 'metrics cheat sheet' with key performance indicators from past projects",
+                        "Practice whiteboarding design challenges with time constraints",
+                        "Prepare questions about the company's design culture and AI adoption"
+                    ]
+                };
+                setInsights(mockInsights);
+                setAiNotAvailable(false);
+            };
+
+            const getOutcomeColor = (outcome) => {
+                switch (outcome) {
+                    case 'positive': return 'text-success';
+                    case 'negative': return 'text-error';
+                    case 'pending': return 'text-warning';
+                    default: return 'text-secondary';
+                }
+            };
+
+            const renderDashboard = () => {
+                return (
+                    <div className="layout">
+                        <div className="grid">
+                            <div className="card">
+                                <div className="flex-center flex-col">
+                                    <div className="text-secondary mb-2">Total Interviews</div>
+                                    <div className="stats-number">{interviews.length}</div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="flex-center flex-col">
+                                    <div className="text-secondary mb-2">Positive Outcomes</div>
+                                    <div className="stats-number text-success">
+                                        {interviews.filter(i => i.outcome === 'positive').length}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="flex-center flex-col">
+                                    <div className="text-secondary mb-2">Companies</div>
+                                    <div className="stats-number">{new Set(interviews.map(i => i.company)).size}</div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="flex-center flex-col">
+                                    <div className="text-secondary mb-2">Pending</div>
+                                    <div className="stats-number text-warning">
+                                        {interviews.filter(i => i.outcome === 'pending').length}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <div className="section-header">
+                                <h3>Recent Interviews</h3>
+                                <button
+                                    onClick={() => setShowAddForm(true)}
+                                    className="btn btn-primary"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Add Interview
+                                </button>
+                            </div>
+                            {interviews.length === 0 ? (
+                                <div className="flex-center flex-col py-8">
+                                    <svg className="h-12 w-12 text-secondary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                    </svg>
+                                    <p className="text-secondary">No interviews tracked yet. Add your first interview to get started!</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {interviews.slice(-5).reverse().map(interview => (
+                                        <div key={interview.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                            <div className="flex-between">
+                                                <div>
+                                                    <h4 className="font-medium mb-1">{interview.position}</h4>
+                                                    <p className="text-secondary mb-1">{interview.company}</p>
+                                                    <p className="text-sm text-secondary">{interview.date}</p>
+                                                </div>
+                                                <div className={`status-badge ${getOutcomeColor(interview.outcome)}`}>
+                                                    {interview.outcome}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            const renderAddForm = () => {
+                return (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                        <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-screen overflow-y-auto">
+                            <h3 className="text-xl font-semibold mb-6">Add New Interview</h3>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Company</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter company name"
+                                        value={newInterview.company}
+                                        onChange={(e) => handleInputChange('company', e.target.value)}
+                                        className="input-field"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Position</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter position title"
+                                        value={newInterview.position}
+                                        onChange={(e) => handleInputChange('position', e.target.value)}
+                                        className="input-field"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Interview Type</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g., Phone, Panel, Portfolio Review"
+                                        value={newInterview.interviewType}
+                                        onChange={(e) => handleInputChange('interviewType', e.target.value)}
+                                        className="input-field"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Date</label>
+                                    <input
+                                        type="date"
+                                        value={newInterview.date}
+                                        onChange={(e) => handleInputChange('date', e.target.value)}
+                                        className="input-field"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Interviewer</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Interviewer name and role"
+                                        value={newInterview.interviewer}
+                                        onChange={(e) => handleInputChange('interviewer', e.target.value)}
+                                        className="input-field"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Key Questions</label>
+                                    <textarea
+                                        placeholder="Enter key questions asked during the interview..."
+                                        value={newInterview.questions}
+                                        onChange={(e) => handleInputChange('questions', e.target.value)}
+                                        className="input-field h-32"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Feedback</label>
+                                    <textarea
+                                        placeholder="Enter feedback received from interviewer..."
+                                        value={newInterview.feedback}
+                                        onChange={(e) => handleInputChange('feedback', e.target.value)}
+                                        className="input-field h-32"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Reflection</label>
+                                    <textarea
+                                        placeholder="Share your thoughts and reflections on the interview..."
+                                        value={newInterview.myReflection}
+                                        onChange={(e) => handleInputChange('myReflection', e.target.value)}
+                                        className="input-field h-32"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Outcome</label>
+                                    <select
+                                        value={newInterview.outcome}
+                                        onChange={(e) => handleInputChange('outcome', e.target.value)}
+                                        className="input-field"
+                                    >
+                                        <option value="pending">Pending</option>
+                                        <option value="positive">Positive</option>
+                                        <option value="negative">Negative</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="flex justify-end space-x-3 mt-8">
+                                <button
+                                    onClick={() => setShowAddForm(false)}
+                                    className="btn btn-secondary"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={addInterview}
+                                    disabled={!newInterview.company || !newInterview.position}
+                                    className="btn btn-primary disabled:opacity-50"
+                                >
+                                    Add Interview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="layout">
+                    <div className="container">
+                        <div className="flex justify-between items-center mb-8">
+                            <h1 className="text-2xl font-bold">Interview Insights Tracker</h1>
+                        </div>
+                        
+                        <div className="nav-tabs">
+                            <button
+                                onClick={() => setActiveTab('dashboard')}
+                                className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
+                            >
+                                Dashboard
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('interviews')}
+                                className={`nav-tab ${activeTab === 'interviews' ? 'active' : ''}`}
+                            >
+                                All Interviews
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('insights')}
+                                className={`nav-tab ${activeTab === 'insights' ? 'active' : ''}`}
+                            >
+                                Insights
+                            </button>
+                        </div>
+
+                        {showAddForm && renderAddForm()}
+
+                        <div className={`tab-content ${activeTab === 'dashboard' ? 'active' : ''}`}>
+                            {renderDashboard()}
+                        </div>
+                        <div className={`tab-content ${activeTab === 'interviews' ? 'active' : ''}`}>
+                            {/* Add All Interviews content here */}
+                            <div className="card">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3>All Interviews</h3>
+                                    <button
+                                        onClick={() => setShowAddForm(true)}
+                                        className="btn btn-primary"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        Add Interview
+                                    </button>
+                                </div>
+                                {interviews.length === 0 ? (
+                                    <div className="flex-center flex-col py-8">
+                                        <svg className="h-12 w-12 text-secondary mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                        </svg>
+                                        <p className="text-secondary">No interviews tracked yet. Add your first interview to get started!</p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {interviews.map(interview => (
+                                            <div key={interview.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                                <div className="flex-between">
+                                                    <div>
+                                                        <h4 className="font-medium mb-1">{interview.position}</h4>
+                                                        <p className="text-secondary mb-1">{interview.company}</p>
+                                                        <p className="text-sm text-secondary">{interview.date}</p>
+                                                    </div>
+                                                    <div className={`status-badge ${getOutcomeColor(interview.outcome)}`}>
+                                                        {interview.outcome}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className={`tab-content ${activeTab === 'insights' ? 'active' : ''}`}>
+                            {/* Add Insights content here */}
+                            <div className="card">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3>Interview Insights</h3>
+                                </div>
+                                {insights ? (
+                                    <div>
+                                        <div className="space-y-4">
+                                            <div>
+                                                <h4 className="font-medium mb-2">Overall Trends</h4>
+                                                <p className="text-secondary">{insights.overallTrends}</p>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-medium mb-2">Strengths Identified</h4>
+                                                <ul className="list-disc list-inside text-secondary">
+                                                    {insights.strengthsIdentified.map((strength, index) => (
+                                                        <li key={index}>{strength}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-medium mb-2">Areas for Improvement</h4>
+                                                <ul className="list-disc list-inside text-secondary">
+                                                    {insights.areasForImprovement.map((area, index) => (
+                                                        <li key={index}>{area}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-medium mb-2">Common Questions</h4>
+                                                <ul className="list-disc list-inside text-secondary">
+                                                    {insights.commonQuestions.map((question, index) => (
+                                                        <li key={index}>{question}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-medium mb-2">Actionable Recommendations</h4>
+                                                <ul className="list-disc list-inside text-secondary">
+                                                    {insights.actionableRecommendations.map((recommendation, index) => (
+                                                        <li key={index}>{recommendation}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-medium mb-2">Prep Suggestions</h4>
+                                                <ul className="list-disc list-inside text-secondary">
+                                                    {insights.prepSuggestions.map((suggestion, index) => (
+                                                        <li key={index}>{suggestion}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex-center flex-col py-8">
+                                        <button
+                                            onClick={generateMockInsights}
+                                            className="btn btn-primary"
+                                        >
+                                            Generate Insights
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
